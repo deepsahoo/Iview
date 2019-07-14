@@ -1,20 +1,62 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<p-menubar [model]="items"></p-menubar>
+<div class="ui-g content">
+    <div id="graphcontainer" #graphcontainer style="height: 100%;width: 100%;"></div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="ui-g side" style="float: right;margin-top: -24%;">
+    <button pButton type="button" (click)="visibleSidebar2 = true" icon="pi pi-arrow-left" style="background-color: #494949;
+    border: 1px solid #494949;"></button>
+</div>
 
+
+<p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000">
+    <p-tabView *ngIf="selectedNode">
+        <p-tabPanel header="Details" leftIcon="pi pi-calendar">
+            <p-accordion>
+                <p-accordionTab header="{{selectedNode.description}}" [selected]="true">
+                    <p-table [value]="detailList">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-detail>
+                            <tr>
+                                <td>{{detail.name}}</td>
+                                <td>{{detail.value}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-accordionTab>
+
+            </p-accordion>
+        </p-tabPanel>
+        <p-tabPanel header="Legends" leftIcon="pi pi-inbox">
+            <p-accordion>
+                <p-accordionTab header="{{connectionTypeEnum.name}}">
+
+                    <div class="legend-wrapper" *ngFor="let item of conItem">
+                        <p class="connection-type" [ngStyle]="{'background-color': item.color}"></p>
+                        <p class="legend-desc">{{item.description}}</p>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="{{etaStatusEnum.name}}">
+                    
+                        <div class="legend-wrapper"  *ngFor="let item of etaItem">
+                                <div class="legend-circle"  [ngStyle]="{'background-color': item.color}"></div>
+                                <p class="legend-desc">{{item.description}}</p>
+                              </div>
+                </p-accordionTab>
+
+                <p-accordionTab header="{{categoryEnum.name}}">
+                    
+                        <div class="legend-wrapper"  *ngFor="let item of catItem">
+                                <div class="legend-circle  outer-border" [ngStyle]="{'border-color': item.color}"></div>
+                                <p class="legend-desc">{{item.description}}</p>
+                              </div> 
+                </p-accordionTab>
+            </p-accordion>
+        </p-tabPanel>
+    </p-tabView>
+</p-sidebar>

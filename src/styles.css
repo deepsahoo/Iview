@@ -1,1 +1,187 @@
 /* You can add global styles to this file, and also import other style files */
+/*@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";*/
+
+
+.node {
+    cursor: pointer;
+  }
+  
+  .overlay {
+    background-color: black;
+  }
+  
+  .node circle {
+    /* fill: #fff;
+    stroke: steelblue; */
+    stroke-width: 3.5px;
+  }
+  
+  .node text {
+    font-size: 15px;
+    font-family: Helvetica;
+    font-style: italic;
+    color: red;
+  }
+  
+  .link {
+    fill: none;
+    /* stroke: #ccc; */
+    stroke-width: 2px;
+    color: chartreuse;
+  }
+  
+  .templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+  }
+  
+  .ghostCircle.show {
+    display: block;
+  }
+  
+  .ghostCircle,
+  .activeDrag .ghostCircle {
+    display: 'red';
+  }
+  
+  .wrapper {
+    box-sizing: border-box;
+    display: flex;
+    padding: 0.1em 0;
+  }
+  
+  #graph-container {
+    width: 80%;
+  }
+  
+  #description-container {
+    padding-left: 0.1em;
+    width: 20%;
+  }
+  
+  #description-container .card {
+    height: 100%;
+  }
+  
+  #description-details {
+    color: white;
+  }
+  
+  .tree-wrapper {
+    width: 100%;
+  }
+  
+  .key::after {
+    content: '-';
+    padding-left: 0.5em;
+    padding-right: 0.3em;
+  }
+  
+  .value {
+    font-weight: bold;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  main {
+    flex-grow: 1;
+  }
+  
+  header {
+    color: white;
+  }
+  
+  footer {
+    min-height: 15px;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  footer > p {
+    margin: 0;
+    text-align: center;
+  }
+  
+  .legend-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1px;
+  }
+  
+  .legend-wrapper p {
+    margin: 0;
+  }
+  
+  .connection-type {
+    height: 5px;
+    width: 60px;
+  }
+  
+  .legend-desc {
+    padding-left: 1em;
+  }
+  
+  .legend-circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+  
+    /* background: red; */
+  }
+  
+  .legend-circle.outer-border {
+    border-width: 5px;
+    border-style: solid;
+  }
+  
+  .tip {
+    background-color: black;
+  }
+
+  .ui-menubar{
+    background-color: black !important;
+    border: 1px solid white !important;
+} 
+.ui-widget{
+    font-size: 13px !important;
+}
+.ui-submenu-icon{
+    color: white !important;
+}
+
+.ui-menubar .ui-submenu-list {
+    background-color: black !important;
+    border: 1px solid white !important;
+    box-shadow: 0 0px 6px 0 white !important;
+}
+.ui-menuitem-active > .ui-menuitem-link {
+    background-color: #494949 !important;
+}
+.ui-menuitem-text{
+    color : white !important;
+}
+
+.ui-menuitem-icon{
+    color: white !important;   
+}
+
+.ui-sidebar{
+  width: 30% !important;
+  height: 100% !important;
+}
+.ui-accordion-content {
+  overflow-y: auto !important;
+  height: 480px !important;
+}
