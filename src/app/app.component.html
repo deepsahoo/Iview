@@ -1,5 +1,27 @@
-<p-menubar [model]="items"></p-menubar>
-<div class="ui-g content">
+<!--<p-menubar [model]="items">   
+</p-menubar>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+
+
+<p-dialog header="Upload" [(visible)]="display" [modal]="true" [responsive]="true"  [modal]="true" [responsive]="true" [style]="{width: '350px', minWidth: '200px'}" [minY]="70" 
+        [maximizable]="true" [baseZIndex]="10000">
+    <p>
+            <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
+            (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">
+                                    
+            </p-fileUpload>
+
+
+    </p>
+       
+</p-dialog>-->
+
+<router-outlet></router-outlet>
+
+
+
+
+<!--<div class="ui-g content">
     <div id="graphcontainer" #graphcontainer style="height: 100%;width: 100%;"></div>
 </div>
 <div class="ui-g side" style="float: right;margin-top: -24%;">
@@ -59,4 +81,4 @@
             </p-accordion>
         </p-tabPanel>
     </p-tabView>
-</p-sidebar>
+</p-sidebar>-->

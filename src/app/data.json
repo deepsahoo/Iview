@@ -30,7 +30,7 @@
     },
     "children" : [ {
       "serialNoIndex" : "2",
-      "linkIndex" : "1",
+      "linkIndex" : "0",
       "name" : "002:RTIS",
       "description" : "*RTIS",
       "etaStatus" : "On Target",
@@ -59,7 +59,7 @@
       },
       "children" : [ {
         "serialNoIndex" : "3",
-        "linkIndex" : "2",
+        "linkIndex" : "1",
         "name" : "003:Eligibility",
         "description" : "**Eligibility",
         "etaStatus" : "On Target",
@@ -88,7 +88,7 @@
         },
         "children" : [ {
           "serialNoIndex" : "4",
-          "linkIndex" : "3",
+          "linkIndex" : "4",
           "name" : "004:Eligibility Mainline",
           "description" : "***Eligibility Mainline",
           "etaStatus" : "On Target",
@@ -321,7 +321,7 @@
                 } ]
               }, {
                 "serialNoIndex" : "12",
-                "linkIndex" : "6",
+                "linkIndex" : "1",
                 "name" : "012:Provider Match & Eligibility Microservice",
                 "description" : "******Provider Match & Eligibility Microservice",
                 "etaStatus" : "On Target",

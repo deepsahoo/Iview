@@ -1,0 +1,151 @@
+<p-menubar [model]="items">
+</p-menubar>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+
+
+<p-dialog header="Upload" [(visible)]="display" [modal]="true" [responsive]="true" [modal]="true" [responsive]="true"
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <p>
+        <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
+            (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">
+
+        </p-fileUpload>
+
+
+    </p>
+
+</p-dialog>
+<div class="ui-g content overlay" style="min-height: 100%">
+    <div id="graphcontainer" #graphcontainer style="height: 100%;width: 100%;" *ngIf="isView"></div>
+
+    <div class="ui-g" style="width: 60%; text-align: center;margin-left: 22%;" *ngIf="!isView">
+        <div class="ui-g-6" *ngFor = "let line of serviceLines">
+            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+                <p-header>
+                    <h2>{{line.name}}</h2>
+                </p-header>
+                <div>{{line.description}}
+                </div>
+                <p-footer>
+                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
+                        style="margin-right: .25em,width:20px" (click)="showGraph(line._id)" icon="pi pi-sitemap"></button>
+                </p-footer>
+            </p-card>
+        </div>
+
+
+        <!-- <div class="ui-g-6">
+            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+                <p-header>
+                    <h2>{{selectedNode.name}}</h2>
+                </p-header>
+                <div>{{selectedNode.name}}, description : {{selectedNode.description}}
+                    Details : {{selectedNode.details.Process}}, Group : {{selectedNode.details.Group}},
+                    Owner : {{selectedNode.details.Owner}}, hosted on : {{selectedNode.details['Hosted Name']}}
+                </div>
+                <p-footer>
+                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
+                        style="margin-right: .25em,width:20px" (click)="showGraph()" icon="pi pi-sitemap"></button>
+                </p-footer>
+            </p-card>
+        </div> -->
+
+        <!-- <div class="ui-g-6">
+            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+                <p-header>
+                    <h2>{{selectedNode.name}}</h2>
+                </p-header>
+                <div>{{selectedNode.name}}, description : {{selectedNode.description}}
+                    Details : {{selectedNode.details.Process}}, Group : {{selectedNode.details.Group}},
+                    Owner : {{selectedNode.details.Owner}}, hosted on : {{selectedNode.details['Hosted Name']}}
+                </div>
+                <p-footer>
+                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
+                        style="margin-right: .25em,width:20px" (click)="showGraph()" icon="pi pi-sitemap"></button>
+                </p-footer>
+            </p-card>
+        </div> -->
+
+
+        <!-- <div class="ui-g-6">
+            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+                <p-header>
+                    <h2>{{selectedNode.name}}</h2>
+                </p-header>
+                <div>{{selectedNode.name}}, description : {{selectedNode.description}}
+                    Details : {{selectedNode.details.Process}}, Group : {{selectedNode.details.Group}},
+                    Owner : {{selectedNode.details.Owner}}, hosted on : {{selectedNode.details['Hosted Name']}}
+                </div>
+                <p-footer>
+                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
+                        style="margin-right: .25em,width:20px" (click)="showGraph()" icon="pi pi-sitemap"></button>
+                </p-footer>
+            </p-card>
+        </div> -->
+
+    </div>
+
+</div>
+<!-- <div class="ui-g side" style="float: right;margin-top: -5%;" *ngIf="isView">
+    <button pButton type="button" label="Home View" class="ui-button-rounded ui-button-success"
+        style="margin-right: .25em,width:20px" (click)="isView = false"></button>
+</div> -->
+
+<div class="ui-g side" style="float: right;margin-top: -24%;" *ngIf="isView">
+    <button pButton type="button" (click)="visibleSidebar2 = true" icon="pi pi-arrow-left" style="background-color: #494949;
+      border: 1px solid #494949;"></button>
+</div>
+
+
+<p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000">
+    <p-tabView *ngIf="selectedNode">
+        <p-tabPanel header="Details" leftIcon="pi pi-calendar">
+            <p-accordion>
+                <p-accordionTab header="{{selectedNode.description}}" [selected]="true">
+                    <p-table [value]="detailList">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-detail>
+                            <tr>
+                                <td>{{detail.name}}</td>
+                                <td>{{detail.value}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-accordionTab>
+
+            </p-accordion>
+        </p-tabPanel>
+        <p-tabPanel header="Legends" leftIcon="pi pi-inbox">
+            <p-accordion>
+                <p-accordionTab header="{{connectionTypeEnum.name}}">
+
+                    <div class="legend-wrapper" *ngFor="let item of conItem">
+                        <p class="connection-type" [ngStyle]="{'background-color': item.color}"></p>
+                        <p class="legend-desc">{{item.description}}</p>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="{{etaStatusEnum.name}}">
+
+                    <div class="legend-wrapper" *ngFor="let item of etaItem">
+                        <div class="legend-circle" [ngStyle]="{'background-color': item.color}"></div>
+                        <p class="legend-desc">{{item.description}}</p>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab header="{{categoryEnum.name}}">
+
+                    <div class="legend-wrapper" *ngFor="let item of catItem">
+                        <div class="legend-circle  outer-border" [ngStyle]="{'border-color': item.color}"></div>
+                        <p class="legend-desc">{{item.description}}</p>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
+        </p-tabPanel>
+    </p-tabView>
+</p-sidebar>

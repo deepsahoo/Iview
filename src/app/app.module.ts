@@ -14,11 +14,25 @@ import { HttpClientModule }    from '@angular/common/http';
 import {MenubarModule} from 'primeng/menubar';
 import {TabViewModule} from 'primeng/tabview';
 import {TableModule} from 'primeng/table';
+import {FileUploadModule} from 'primeng/fileupload';
+import {DialogModule} from 'primeng/dialog';
+import {ToastModule} from 'primeng/toast';
+import { AppRoutingModule } from './app-routing.module';
+import { DisplayComponent } from './display/display.component';
+import { UpdateComponent } from './update/update.component';
+import {TreeModule} from 'primeng/tree';
+import {OrganizationChartModule} from 'primeng/organizationchart';
+import {InputTextModule} from 'primeng/inputtext';
+import {DropdownModule} from 'primeng/dropdown';
+import {CardModule} from 'primeng/card';
+
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DisplayComponent,
+    UpdateComponent
      ],
   imports: [
     BrowserModule,
@@ -34,7 +48,17 @@ import {TableModule} from 'primeng/table';
     ReactiveFormsModule,
     MenubarModule,
     TabViewModule,
-    HttpClientModule
+    FileUploadModule,
+    DialogModule,
+    ToastModule,
+    HttpClientModule,
+    AppRoutingModule,
+    TreeModule,
+    OrganizationChartModule,
+    InputTextModule,
+    DropdownModule,
+    CardModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

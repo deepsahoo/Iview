@@ -1,25 +1,24 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TreeService } from './tree.service';
-//import * as d3 from 'd3';
+import { TreeService } from '../tree.service';
 import { MenuItem } from 'primeng/api';
-import { Detaildata } from './Detaildata';
+import { Detaildata } from '../Detaildata';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Inject, Injectable } from '@angular/core'
-import {MessageService} from 'primeng/api';
-
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 declare var d3: any;
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'app-display',
+  templateUrl: './display.component.html',
+  styleUrls: ['./display.component.css'],
   providers: [MessageService]
 })
-export class AppComponent implements OnInit {
+export class DisplayComponent implements OnInit {
 
-  ngOnInit(): void {}
-  /*@ViewChild('graphcontainer') elementView: ElementRef;
+  @ViewChild('graphcontainer') elementView: ElementRef;
 
   display: boolean = false;
   items: MenuItem[];
@@ -50,44 +49,60 @@ export class AppComponent implements OnInit {
   connectionTypeEnum: any = {};
   visibleSidebar2 = false;
   nodeDetail: any = {};
-  
-  constructor(private treeService: TreeService,@Inject(DOCUMENT) private document: any,
-  private messageService: MessageService) {
+
+  isView: boolean = false;
+  serviceLines: any[] = [];
+  constructor(private treeService: TreeService, @Inject(DOCUMENT) private document: any,
+    private messageService: MessageService, private router: Router) {
 
   }
 
 
   ngOnInit(): void {
 
-    this.intialize('data');
+    this.initialize('data');
     this.items = [
       {
-        label: 'File',
+        label: 'Home',
+        icon: 'pi pi-fw pi-home',
         items: [{
-          label: 'Open',
-          icon: 'pi pi-fw pi-plus',
-          items: [
-            { label: 'claim processing',command: (event) => {
-              this.intialize('data');
-          } },
-            { label: 'BDM' ,command: (event) => {
-              this.intialize('data1');
-          }},
-          ]
+          label: 'View',
+          icon: 'pi pi-fw pi-sitemap',
+          command: (event) => {
+            if (this.isView) {
+              this.isView = false;
+            }
+            this.router.navigate(['/display']);
+          }
         }
-        
+
         ]
       },
       {
         label: 'Upload',
+        icon: 'pi pi-fw pi-upload',
+        items: [
+          {
+            label: 'New', icon: 'pi pi-fw pi-upload', command: (event) => {
+              this.display = true;
+            }
+          }
+
+        ]
+      },
+      {
+        label: 'Update',
         icon: 'pi pi-fw pi-pencil',
         items: [
-          { label: 'New', icon: 'pi pi-fw pi-upload',command: (event) => {
-            this.display = true;
-        } }
-          
+          {
+            label: 'New', icon: 'pi pi-fw pi-pencil', command: (event) => {
+              this.router.navigate(['/update']);
+            }
+          }
+
         ]
-      }
+      },
+
     ];
   }
 
@@ -182,9 +197,9 @@ export class AppComponent implements OnInit {
       }
     }*/
 
-    // Define the zoom function for the zoomable tree */
+    // Define the zoom function for the zoomable tree
 
-    /*function zoom() {
+    function zoom() {
       svgGroup.attr(
         'transform',
         'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
@@ -539,8 +554,7 @@ export class AppComponent implements OnInit {
 
   }*/
 
-
- /* getNodeBackgroundColor(status) {
+  getNodeBackgroundColor(status) {
     const res = this.etaStatusEnum.items[status] || this.etaStatusEnum.items['000'];
     return res.color;
   }
@@ -566,15 +580,89 @@ export class AppComponent implements OnInit {
     }
   }
 
-  intialize(name){
-    
-    let parent = this.document.getElementById('graphcontainer');
+  initialize(name) {
+
+    // let parent = this.document.getElementById('graphcontainer');
+    // let child = this.document.getElementsByTagName('svg').item(0);
+    // if (child) {
+    //   parent.removeChild(child);
+    // }
+
+    // call all the service lines
+
+    this.treeService.getAllServiceLines().subscribe(
+      data => {
+        this.serviceLines = data;
+        console.log(data);
+      }
+    )
+
+    // this.treeService.getNodes(name).subscribe(
+    //   // the first argument is a function which runs on success
+    //   data => {
+    //     this.connectionTypeEnum = data.meta.connectionType;
+    //     this.etaStatusEnum = data.meta.etaStatus;
+    //     this.categoryEnum = data.meta.category;
+
+
+    //     let this1 = this;
+
+    //     this.conItem = Object.keys(this1.connectionTypeEnum.items).map(function (index) {
+    //       let item = this1.connectionTypeEnum.items[index];
+    //       return item;
+    //     });
+
+    //     this.etaItem = Object.keys(this1.etaStatusEnum.items).map(function (index) {
+    //       let item = this1.etaStatusEnum.items[index];
+    //       return item;
+    //     });
+
+    //     this.catItem = Object.keys(this1.categoryEnum.items).map(function (index) {
+    //       let item = this1.categoryEnum.items[index];
+    //       return item;
+    //     });
+
+    //     this.selectedNode = data.data;
+    //     this.nodeDetail = this.selectedNode.details;
+    //     this.createNodeDetail(this.nodeDetail);
+    //     this.constructGraph(data.data);
+    //   })
+  }
+
+  uploadNodeData(event, form) {
+    //form.clear();
+    this.treeService.uploadNodeData(event).subscribe(
+      data => {
+        form.clear();
+        this.display = false;
+        this.initialize('data');
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Uploaded sucessfully' });
+      })
+
+    /**,
+    error =>{
+      this.display = false;
+      form.clear();
+      this.messageService.add({severity:'error', summary: 'Error Message', detail:'Upload failed'});
+    }**/
+
+  }
+
+  onUploadNodeData(event) {
+    alert('sucess');
+  }
+
+  showGraph(lineId : any) {
+    this.isView = true;
+   //this.initialize('data');
+
+   let parent = this.document.getElementById('graphcontainer');
     let child = this.document.getElementsByTagName('svg').item(0);
-    if(child){
+    if (child) {
       parent.removeChild(child);
     }
-    
-    this.treeService.getNodes(name).subscribe(
+
+    this.treeService.getNodes(lineId).subscribe(
       // the first argument is a function which runs on success
       data => {
         this.connectionTypeEnum = data.meta.connectionType;
@@ -583,10 +671,10 @@ export class AppComponent implements OnInit {
 
 
         let this1 = this;
-        
+
         this.conItem = Object.keys(this1.connectionTypeEnum.items).map(function (index) {
           let item = this1.connectionTypeEnum.items[index];
-         return item;
+          return item;
         });
 
         this.etaItem = Object.keys(this1.etaStatusEnum.items).map(function (index) {
@@ -598,35 +686,14 @@ export class AppComponent implements OnInit {
           let item = this1.categoryEnum.items[index];
           return item;
         });
-        
+
         this.selectedNode = data.data;
         this.nodeDetail = this.selectedNode.details;
         this.createNodeDetail(this.nodeDetail);
         this.constructGraph(data.data);
       })
+
+
   }
-
-  uploadNodeData(event,form){
-    //form.clear();
-    this.treeService.uploadNodeData(event).subscribe(
-      data => {
-        form.clear();
-        this.display = false;
-        this.intialize('data');
-        this.messageService.add({severity:'success', summary: 'Success Message', detail:'Uploaded sucessfully'});
-      })
-      
-      /**,
-      error =>{
-        this.display = false;
-        form.clear();
-        this.messageService.add({severity:'error', summary: 'Error Message', detail:'Upload failed'});
-      }**/
-      
-/*}
-
-  onUploadNodeData(event){
-    alert('sucess');
-  }*/
 
 }
