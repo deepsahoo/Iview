@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild ,ViewEncapsulation} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeService } from '../tree.service';
 import { MenuItem } from 'primeng/api';
@@ -14,7 +14,8 @@ declare var d3: any;
   selector: 'app-display',
   templateUrl: './display.component.html',
   styleUrls: ['./display.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
+  encapsulation:ViewEncapsulation.None
 })
 export class DisplayComponent implements OnInit {
 
@@ -649,7 +650,7 @@ export class DisplayComponent implements OnInit {
   }
 
   onUploadNodeData(event) {
-    alert('sucess');
+   // alert('sucess');
   }
 
   showGraph(lineId : any) {

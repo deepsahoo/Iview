@@ -5,6 +5,7 @@
 
 <p-dialog header="Upload" [(visible)]="display" [modal]="true" [responsive]="true" [modal]="true" [responsive]="true"
     [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    
     <p>
         <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
             (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">

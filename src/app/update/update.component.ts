@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewEncapsulation} from '@angular/core';
 import { TreeService } from '../tree.service';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+//import { ViewEncapsulation } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
-  styleUrls: ['./update.component.css']
+  styleUrls: ['./update.component.css'],
+  encapsulation:ViewEncapsulation.None
 })
 export class UpdateComponent implements OnInit {
   items: MenuItem[];
@@ -36,9 +38,14 @@ export class UpdateComponent implements OnInit {
   isView: boolean = false;
   updateServiceLine: any = {};
   updateSlMap: any = {};
+  currentNode : any = {};
+  parentNode : any = {};
+  displayUpload : boolean = false;
+  
 
   constructor(private treeService: TreeService, private router: Router, private messageService: MessageService) { }
   ngOnInit() {
+    // this.parent = this.updateServiceLine.data;
 
     this.items = [
       {
@@ -59,7 +66,7 @@ export class UpdateComponent implements OnInit {
         items: [
           {
             label: 'New', icon: 'pi pi-fw pi-upload', command: (event) => {
-              // this.display = true;
+               this.displayUpload = true;
             }
           }
 
@@ -174,7 +181,14 @@ export class UpdateComponent implements OnInit {
     this.childNode.category = this.selectedChildCategory.code;
     this.childNode.etaStatus = this.selectedChildStatus.code;
     this.childNode.connectionType = this.selectedChildCon.code;
-    this.selectedNode.children.push(this.childNode);
+    if(this.selectedNode.children){
+      this.selectedNode.children.push(this.childNode);
+    }else{
+      let childList = new Array();
+      childList.push(this.childNode);
+      this.selectedNode.children = childList;
+
+    }
     this.displayChild = false;
     this.updateNode();
   }
@@ -186,28 +200,174 @@ export class UpdateComponent implements OnInit {
       data => {
         console.log(data);
         this.updateServiceLine = data;
+        this.parentNode  = this.updateServiceLine.data;
+        this.currentNode = this.updateServiceLine.data;
         this.dataList.push(this.updateServiceLine.data);
+        this.collapseAll();
       })
   }
-  removeNode() {};
- /* removeNode() {
-    if (this.updateServiceLine.data.name === this.selectedNode[name]) {
-      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Parent can not be deleted' });
-    } else {
-      for (let node of this.updateServiceLine.data.children) {
-        if (node.name === this.selectedNode[name]){
-          if(node.children && node.children.length == 0){
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Node with child node can not be deleted' });
-          }else{
-            
-          }
-        }
-        for (childNode of parent) {
 
+  
+  removeNode() {
+    // if (this.updateServiceLine.data.name === this.selectedNode[name]) {
+    //   this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Parent can not be deleted' });
+    // } else {
+     // let isMatch = false;
+
+    /* if(!this.currentNode.children){
+      console.log("inside no children")
+      if(this.currentNode['name'] === 'TestChild1'){
+        console.log('deleteing record found');
+        this.parentNode.children.splice(this.parentNode.children.indexOf(this.currentNode,1));
+        //this.currentNode = null;
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node deleted' });
+      }
+      return;
+    }*/
+    if(!this.currentNode.children){
+      return;
+    }
+    let isMatch = false;
+    for(let node of this.currentNode.children){
+      if(node['name'] === this.selectedNode['name']){
+        console.log('match found')
+        isMatch = true;
+        if(node.children){
+         // this.display = false;
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Node with child node can not be deleted' });
+        }else{
+          this.parentNode.children.splice(this.parentNode.children.indexOf(node),1);
+          this.display = false;
+          this.updateNode();
         }
+        return;
+      }
+    }
+    if(!isMatch){
+      for(let node of this.currentNode.children){
+        console.log(node['name']);
+        this.currentNode = node;
+        this.parentNode = this.currentNode;
+        this.removeNode();
       }
     }
 
-  }*/
+
+
+
+
+
+
+
+
+     /* if(!this.currentNode.children){
+        console.log("inside no children")
+        if(this.currentNode['name'] === 'TestChild1'){
+          console.log('deleteing record found');
+          //this.parentNode.children.splice(this.parentNode.children.indexOf(this.currentNode,1));
+          this.currentNode = null;
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node deleted' });
+        }
+        return;
+      }
+      if(this.currentNode['name'] === 'TestChild1'){
+        console.log('match found');
+        if (!this.currentNode.children) {
+          this.parentNode.children.splice(this.parentNode.children.indexOf(this.currentNode,1));
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node deleted' });
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Node with child node can not be deleted' });
+        }
+        return;
+      }else{
+        for(let node of this.currentNode.children){
+          console.log(node['name']);
+          if(node.children){
+            this.parentNode = this.currentNode;
+          }
+          this.currentNode = node;
+          this.removeNode();
+        }
+      }   */  
+
+
+
+
+      // this.updateServiceLine.data.children.forEach(function (node, index, object) {
+      //   if (node.name === this.selectedNode[name]) {
+      //     if (node.children && node.children.length == 0) {
+      //       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Node with child node can not be deleted' });
+      //     } else {
+      //       object.splice(index, 1);
+      //     }
+      //   }else{
+      //     if(node.children && node.children)
+      //   }
+      // });
+      // end of loop
+    //}
+  }
+
+ // parent = this.updateServiceLine.data;
+  removeNode1(parent) {
+
+    if(!parent.children){
+      return;
+    }
+      
+    var i = 0;
+    while(i < parent.children.length) {
+      var data = parent.children[i];
+      if (data['name']  == this.selectedNode[name]) {
+        // remove child - could save it in _children if you wanted to ever put it back
+        if(!data.children || (data.children && data.children.length==0)){
+          var child = parent.children.splice(i,1);
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node deleted' });
+        }else{
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Node with child node can not be deleted' });
+        }
+        // length of child list reduced, i points to the next child
+      }
+      else {
+        // not a bye - recurse
+        this.removeNode1(parent.children[i]);
+        // all the child's bye's are removed so go to the next child
+        i++;
+      }
+    }
+  }
+
+  uploadNodeData(event, form) {
+    //form.clear();
+    this.treeService.uploadNodeData(event).subscribe(
+      data => {
+        form.clear();
+        this.displayUpload = false;
+        this.isView = false;
+        this.treeService.getAllServiceLines().subscribe(
+          data => {
+            this.serviceLines = data;
+          }
+        )
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Uploaded sucessfully' });
+      })
+  }
+
+  collapseAll(){
+    this.dataList.forEach( node => {
+        this.expandRecursive(node, false);
+    } );
+}
+
+private expandRecursive(node:TreeNode, isExpand:boolean){
+    node.expanded = isExpand;
+    if(node.children){
+        node.children.forEach( childNode => {
+            this.expandRecursive(childNode, isExpand);
+        } );
+    }
+}
+
+
 
 }

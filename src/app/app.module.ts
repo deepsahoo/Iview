@@ -25,6 +25,8 @@ import {OrganizationChartModule} from 'primeng/organizationchart';
 import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {CardModule} from 'primeng/card';
+import {TooltipModule} from 'primeng/tooltip';
+import {BreadcrumbModule} from 'primeng/breadcrumb';
 
 
 
@@ -57,7 +59,10 @@ import {CardModule} from 'primeng/card';
     OrganizationChartModule,
     InputTextModule,
     DropdownModule,
-    CardModule
+    CardModule,
+    TooltipModule,
+    BreadcrumbModule
+    
     
   ],
   providers: [],

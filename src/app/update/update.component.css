@@ -1,6 +1,20 @@
 .ui-dropdown{
     width: 100% !important;
 }
-body .ui-dialog{
-    width : 400px !important
+/* body .ui-dialog{
+    width : 75% !important
+}
+
+
+p-dialog .ui-dialog {
+    overflow: scroll !important;
+    max-height: 80% !important;
+} */
+.active{
+    overflow: scroll !important;
+    max-height: 80% !important;
+    width : 75% !important
+}
+.uploadDialog{
+    width : 27% !important;
 }

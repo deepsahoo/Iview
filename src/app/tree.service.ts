@@ -32,6 +32,7 @@ uploadNodeData(event) : Observable<any> {
   var fileToUpload = event.files[0];
   let input = new FormData();
   input.append("file", fileToUpload);
+  input.append("description",fileToUpload.name.substring(0, fileToUpload.name.lastIndexOf(".")))
    return this.http.post(url,input).pipe(
     tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.handleError));
