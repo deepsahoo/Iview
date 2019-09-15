@@ -1,16 +1,28 @@
 
-body .ui-dialog{
+/* body .ui-dialog{
+  width : 27% !important;
+} */
+.displayUpload{
   width : 27% !important;
 }
   
-  .ui-dialog .ui-dialog-content {
+.displayUploadDialog.ui-dialog .ui-dialog-content {
     padding: 2.571em 10em !important;
     height: 80% !important;
-  } 
+ } 
 
   body {
     background-color: black !important;
   }
+
+  .saveAsDialog{
+    height: 40% !important;
+    width : 27% !important;
+  }
+
+  .saveAsDialog.ui-dialog .ui-dialog-content {
+    height: 40% !important;
+  } 
 
   
   

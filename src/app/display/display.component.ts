@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild ,ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeService } from '../tree.service';
 import { MenuItem } from 'primeng/api';
@@ -15,7 +15,7 @@ declare var d3: any;
   templateUrl: './display.component.html',
   styleUrls: ['./display.component.css'],
   providers: [MessageService],
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 export class DisplayComponent implements OnInit {
 
@@ -53,6 +53,13 @@ export class DisplayComponent implements OnInit {
 
   isView: boolean = false;
   serviceLines: any[] = [];
+  displaySaveAs = false;
+  selectedServiceLine: any = {};
+  saveAsId: string;
+  updateSlMap: any = {};
+  displayRename : boolean = false;
+  renameId : string;
+
   constructor(private treeService: TreeService, @Inject(DOCUMENT) private document: any,
     private messageService: MessageService, private router: Router) {
 
@@ -62,10 +69,10 @@ export class DisplayComponent implements OnInit {
   ngOnInit(): void {
 
     this.initialize('data');
-    this.items = [
+    /*this.items = [
       {
-        label: 'Home',
-        icon: 'pi pi-fw pi-home',
+        label: '',
+        icon: 'pi pi-bars',
         items: [{
           label: 'View',
           icon: 'pi pi-fw pi-sitemap',
@@ -104,6 +111,23 @@ export class DisplayComponent implements OnInit {
         ]
       },
 
+    ];*/
+
+
+    this.items = [
+      {
+        label: '',
+        icon: 'pi pi-bars',
+        items: [
+          {
+            label: 'New',
+            icon: 'pi pi-fw pi-upload',
+            command: (event) => {
+              this.display = true;
+            }
+          }
+        ]
+      }
     ];
   }
 
@@ -594,7 +618,7 @@ export class DisplayComponent implements OnInit {
     this.treeService.getAllServiceLines().subscribe(
       data => {
         this.serviceLines = data;
-        console.log(data);
+       // console.log(data);
       }
     )
 
@@ -650,51 +674,125 @@ export class DisplayComponent implements OnInit {
   }
 
   onUploadNodeData(event) {
-   // alert('sucess');
+    // alert('sucess');
   }
 
-  showGraph(lineId : any) {
+  showGraph(lineId: any) {
     this.isView = true;
-   //this.initialize('data');
+    let isDelete = false;
 
-   let parent = this.document.getElementById('graphcontainer');
-    let child = this.document.getElementsByTagName('svg').item(0);
-    if (child) {
-      parent.removeChild(child);
+    if(this.items.length > 1){
+      this.items.splice(-1,1)
     }
+    let newItem = {
+      label: lineId,
+      items: [
+        {
+          label: 'Edit',
+          icon: 'pi pi-fw pi-pencil',
+          command: (event) => {
+            this.router.navigate(['update', lineId]);
+          }
+        },
+        {
+          label: 'Save As',
+          icon: 'pi pi-copy',
+          command: (event) => {
+            this.displaySaveAs = true;
+            // this.router.navigate(['update', lineId]);
+          }
+        },
+        {
+          label: 'Rename',
+          icon: 'pi pi-tags',
+          command: (event) => {
+            this.displayRename = true;
+            // this.router.navigate(['update', lineId]);
+          }
+        },
+        
+
+        {
+          label: 'Exit',
+          icon: 'pi pi-sign-out',
+          command: (event) => {
+            this.isView = false;
+            this.items.splice(this.items.indexOf(newItem, 0), 1);
+            this.initialize('data');
+          }
+        }
+      ]
+    }
+
+    this.items.push(newItem);
+
+
+
+    //this.initialize('data');
+
+    this.resetDOM();
 
     this.treeService.getNodes(lineId).subscribe(
       // the first argument is a function which runs on success
       data => {
-        this.connectionTypeEnum = data.meta.connectionType;
-        this.etaStatusEnum = data.meta.etaStatus;
-        this.categoryEnum = data.meta.category;
-
-
-        let this1 = this;
-
-        this.conItem = Object.keys(this1.connectionTypeEnum.items).map(function (index) {
-          let item = this1.connectionTypeEnum.items[index];
-          return item;
-        });
-
-        this.etaItem = Object.keys(this1.etaStatusEnum.items).map(function (index) {
-          let item = this1.etaStatusEnum.items[index];
-          return item;
-        });
-
-        this.catItem = Object.keys(this1.categoryEnum.items).map(function (index) {
-          let item = this1.categoryEnum.items[index];
-          return item;
-        });
-
-        this.selectedNode = data.data;
-        this.nodeDetail = this.selectedNode.details;
-        this.createNodeDetail(this.nodeDetail);
-        this.constructGraph(data.data);
+        this.prepareMetaAndGraph(data);
       })
 
 
   }
 
+
+  prepareMetaAndGraph(data: any) {
+    this.connectionTypeEnum = data.meta.connectionType;
+    this.etaStatusEnum = data.meta.etaStatus;
+    this.categoryEnum = data.meta.category;
+    let this1 = this;
+    this.conItem = Object.keys(this1.connectionTypeEnum.items).map(function (index) {
+      let item = this1.connectionTypeEnum.items[index];
+      return item;
+    });
+    this.etaItem = Object.keys(this1.etaStatusEnum.items).map(function (index) {
+      let item = this1.etaStatusEnum.items[index];
+      return item;
+    });
+    this.catItem = Object.keys(this1.categoryEnum.items).map(function (index) {
+      let item = this1.categoryEnum.items[index];
+      return item;
+    });
+    this.selectedServiceLine = data;
+    this.selectedNode = data.data;
+    this.nodeDetail = this.selectedNode.details;
+    this.createNodeDetail(this.nodeDetail);
+    this.constructGraph(data.data);
+  }
+
+  resetDOM() {
+    let parent = this.document.getElementById('graphcontainer');
+    let child = this.document.getElementsByTagName('svg').item(0);
+    if (child) {
+      parent.removeChild(child);
+    }
+  }
+
+  saveAs() {
+    //let oldId = this.selectedServiceLine['_id'];
+    this.selectedServiceLine['_id'] = this.saveAsId;
+    this.updateSlMap["data"] = this.selectedServiceLine.data;
+    this.updateSlMap["meta"] = this.selectedServiceLine.meta;
+    this.treeService.saveAs(this.updateSlMap,this.saveAsId).subscribe(data => {
+      this.initialize('data1');
+      this.displaySaveAs = false;
+      this.showGraph(this.saveAsId);
+      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Copy has been saved and set as current node' });
+    })
+  }
+
+  rename(){
+      this.treeService.rename(this.selectedServiceLine['_id'],this.renameId).subscribe(data => {
+      this.initialize('data1');
+      this.displayRename = false;
+      this.showGraph(this.renameId);
+      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node renamed successfully' });
+    })
+  }
 }

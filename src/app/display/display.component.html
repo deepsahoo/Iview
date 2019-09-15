@@ -4,8 +4,9 @@
 
 
 <p-dialog header="Upload" [(visible)]="display" [modal]="true" [responsive]="true" [modal]="true" [responsive]="true"
-    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
-    
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000"
+    styleClass="displayUploadDialog">
+
     <p>
         <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
             (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">
@@ -20,7 +21,7 @@
     <div id="graphcontainer" #graphcontainer style="height: 100%;width: 100%;" *ngIf="isView"></div>
 
     <div class="ui-g" style="width: 60%; text-align: center;margin-left: 22%;" *ngIf="!isView">
-        <div class="ui-g-6" *ngFor = "let line of serviceLines">
+        <div class="ui-g-6" *ngFor="let line of serviceLines">
             <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
                 <p-header>
                     <h2>{{line.name}}</h2>
@@ -29,61 +30,11 @@
                 </div>
                 <p-footer>
                     <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
-                        style="margin-right: .25em,width:20px" (click)="showGraph(line._id)" icon="pi pi-sitemap"></button>
+                        style="margin-right: .25em,width:20px" (click)="showGraph(line._id)"
+                        icon="pi pi-sitemap"></button>
                 </p-footer>
             </p-card>
         </div>
-
-
-        <!-- <div class="ui-g-6">
-            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
-                <p-header>
-                    <h2>{{selectedNode.name}}</h2>
-                </p-header>
-                <div>{{selectedNode.name}}, description : {{selectedNode.description}}
-                    Details : {{selectedNode.details.Process}}, Group : {{selectedNode.details.Group}},
-                    Owner : {{selectedNode.details.Owner}}, hosted on : {{selectedNode.details['Hosted Name']}}
-                </div>
-                <p-footer>
-                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
-                        style="margin-right: .25em,width:20px" (click)="showGraph()" icon="pi pi-sitemap"></button>
-                </p-footer>
-            </p-card>
-        </div> -->
-
-        <!-- <div class="ui-g-6">
-            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
-                <p-header>
-                    <h2>{{selectedNode.name}}</h2>
-                </p-header>
-                <div>{{selectedNode.name}}, description : {{selectedNode.description}}
-                    Details : {{selectedNode.details.Process}}, Group : {{selectedNode.details.Group}},
-                    Owner : {{selectedNode.details.Owner}}, hosted on : {{selectedNode.details['Hosted Name']}}
-                </div>
-                <p-footer>
-                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
-                        style="margin-right: .25em,width:20px" (click)="showGraph()" icon="pi pi-sitemap"></button>
-                </p-footer>
-            </p-card>
-        </div> -->
-
-
-        <!-- <div class="ui-g-6">
-            <p-card header="Advanced Card" subheader="Subheader" [style]="{width: '360px'}" styleClass="ui-card-shadow">
-                <p-header>
-                    <h2>{{selectedNode.name}}</h2>
-                </p-header>
-                <div>{{selectedNode.name}}, description : {{selectedNode.description}}
-                    Details : {{selectedNode.details.Process}}, Group : {{selectedNode.details.Group}},
-                    Owner : {{selectedNode.details.Owner}}, hosted on : {{selectedNode.details['Hosted Name']}}
-                </div>
-                <p-footer>
-                    <button pButton type="button" label="View" class="ui-button-rounded ui-button-success"
-                        style="margin-right: .25em,width:20px" (click)="showGraph()" icon="pi pi-sitemap"></button>
-                </p-footer>
-            </p-card>
-        </div> -->
-
     </div>
 
 </div>
@@ -150,3 +101,29 @@
         </p-tabPanel>
     </p-tabView>
 </p-sidebar>
+
+<p-dialog header="Save as" [(visible)]="displaySaveAs" [modal]="true" [responsive]="true"
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass = "saveAsDialog">
+    <div class="ui-g" style="margin-top: 7%">
+        <input type="text" pInputText [(ngModel)]="saveAsId" style="width:100%" />
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="saveAs()" label="Save Copy" class = "ui-button-rounded
+            ui-button-success"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="displaySaveAs = false" label="Cancel"
+            class="ui-button-rounded ui-button-secondary"></button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Rename" [(visible)]="displayRename" [modal]="true" [responsive]="true"
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass = "saveAsDialog">
+    <div class="ui-g" style="margin-top: 7%">
+        <input type="text" pInputText [(ngModel)]="renameId" style="width:100%" />
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="rename()" label="Ok" class = "ui-button-rounded
+            ui-button-success"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="displayRename = false" label="Cancel"
+            class="ui-button-rounded ui-button-secondary"></button>
+    </p-footer>
+</p-dialog>

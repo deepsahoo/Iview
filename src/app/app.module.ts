@@ -26,8 +26,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {CardModule} from 'primeng/card';
 import {TooltipModule} from 'primeng/tooltip';
-import {BreadcrumbModule} from 'primeng/breadcrumb';
-
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 
 @NgModule({
@@ -61,7 +60,7 @@ import {BreadcrumbModule} from 'primeng/breadcrumb';
     DropdownModule,
     CardModule,
     TooltipModule,
-    BreadcrumbModule
+    ConfirmDialogModule
     
     
   ],

@@ -233,3 +233,6 @@ border: 1px solid;
 padding: 10px;
 box-shadow: 5px 10px #888888;
 }
+.ui-menubar .ui-menubar-root-list>.ui-menuitem>.ui-menuitem-link>.ui-submenu-icon{
+  display: none;
+}

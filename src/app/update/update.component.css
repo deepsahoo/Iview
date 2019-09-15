@@ -1,7 +1,7 @@
 .ui-dropdown{
     width: 100% !important;
 }
-/* body .ui-dialog{
+/*.ui-dialog{
     width : 75% !important
 }
 
@@ -15,6 +15,28 @@ p-dialog .ui-dialog {
     max-height: 80% !important;
     width : 75% !important
 }
+
 .uploadDialog{
     width : 27% !important;
 }
+
+    
+.uploadDialog.ui-dialog .ui-dialog-content {
+      padding: 2.571em 10em !important;
+      height: 80% !important;
+   } 
+  
+
+
+
+
+
+
+.updateAsDialog{
+    height: 40% !important;
+    width : 27% !important;
+  }
+
+  .updateAsDialog.ui-dialog .ui-dialog-content {
+    height: 40% !important;
+  } 

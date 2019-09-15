@@ -7,8 +7,8 @@ import { UpdateComponent } from './update/update.component';
 const routes: Routes = [
   { path: 'display', component: DisplayComponent },
   { path: '', component: DisplayComponent },
-  { path: 'update', component: UpdateComponent }
-];
+  { path: "update/:id", component: UpdateComponent }
+ ];
 
 
 @NgModule({

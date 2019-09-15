@@ -11,24 +11,27 @@ import { HttpClient, HttpHeaders ,HttpErrorResponse} from '@angular/common/http'
 })
 export class TreeService {
 
+ // url : string = "http://localhost:8080/";
+  url : string = "http://3.19.196.173:8080/";
+  
   constructor(private http: HttpClient) { }
 
   getNodes(lineId):Observable<any> {
-    let url = "http://localhost:8080/fetch"+"/"+lineId;//'assets/'+name+'.json';
+    let url = this.url+"fetch/"+lineId;
      return this.http.get(url).pipe(map((res : Response) => res));
 
 }
 
 
 getAllServiceLines():Observable<any> {
-  let url = "http://localhost:8080/getSL";//'assets/'+name+'.json';
+  let url = this.url+"getSL";
    return this.http.get(url).pipe(map((res : Response) => res));
 
 }
 
 
 uploadNodeData(event) : Observable<any> {
-  let url = 'http://localhost:8080/upload';
+  let url = this.url+'upload';
   var fileToUpload = event.files[0];
   let input = new FormData();
   input.append("file", fileToUpload);
@@ -39,11 +42,27 @@ uploadNodeData(event) : Observable<any> {
 }
 
 updateServiceLine(map,id) : Observable<any> {
-  let url = 'http://localhost:8080/update'+"/"+id;
+  let url = this.url+'update/'+id;
   return this.http.post(url,map).pipe(
     tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.handleError));
 }
+
+saveAs(map,id) : Observable<any> {
+  let url = this.url+'saveAs/'+id;
+  return this.http.post(url,map).pipe(
+    tap(data => console.log('All: ' + JSON.stringify(data))),
+    catchError(this.handleError));
+}
+
+rename(oldId,newId){
+  let url = this.url+'rename';
+  return this.http.post(url,oldId).pipe(
+    tap(data => console.log('All: ' + JSON.stringify(data))),
+    catchError(this.handleError));
+}
+
+
 
 private extractData(res: Response) {
     let body = res.json();
