@@ -759,7 +759,7 @@ export class DisplayComponent implements OnInit {
       let item = this1.categoryEnum.items[index];
       return item;
     });
-    this.selectedServiceLine = data;
+    this.selectedServiceLine = JSON.parse(JSON.stringify(data));
     this.selectedNode = data.data;
     this.nodeDetail = this.selectedNode.details;
     this.createNodeDetail(this.nodeDetail);

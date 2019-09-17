@@ -447,7 +447,7 @@ export class UpdateComponent implements OnInit {
   }
 
   saveAs() {
-    //let oldId = this.selectedServiceLine['_id'];
+    let oldId = this.updateServiceLine['_id'];
     this.updateServiceLine['_id'] = this.saveAsId;
     this.updateSlMap["data"] = this.updateServiceLine.data;
     this.updateSlMap["meta"] = this.updateServiceLine.meta;
@@ -456,6 +456,12 @@ export class UpdateComponent implements OnInit {
       this.displaySaveAs = false;
       this.showUpdateGraph(this.saveAsId);
       this.lineId = this.saveAsId;
+      for(let item of this.items){
+        if(item.label === oldId){
+          item.label = this.saveAsId;
+          break;
+        }
+      }
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Copy has been saved and set as current node' });
     })
   }
