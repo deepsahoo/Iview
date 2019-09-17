@@ -11,8 +11,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 })
 export class TreeService {
 
-  url: string = "http://localhost:8080/";
-  //url : string = "http://3.19.196.173:8080/";
+  //url: string = "http://localhost:8080/";
+  url : string = "http://3.19.196.173:8080/";
 
   constructor(private http: HttpClient) { }
 
