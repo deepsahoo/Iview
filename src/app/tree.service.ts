@@ -3,7 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-
+import { environment } from './../environments/environment';
 
 
 @Injectable({
@@ -11,9 +11,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 })
 export class TreeService {
 
-  //url: string = "http://localhost:8080/";
-  url : string = "http://3.19.196.173:8080/";
-
+  url: string = environment.url;
   constructor(private http: HttpClient) { }
 
   getNodes(lineId): Observable<any> {
@@ -59,7 +57,7 @@ export class TreeService {
 
     var body = 'oldId=' + oldId + '&newId=' + newId;
     let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/x-www-form-urlencoded'
     });
     let options = { headers: headers };
     let url = this.url + 'rename';

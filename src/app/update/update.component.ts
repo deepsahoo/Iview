@@ -47,6 +47,7 @@ export class UpdateComponent implements OnInit {
   saveAsId: string;
   renameId: string;
   displayRename: boolean = false;
+  disabled : boolean = true;
 
 
   constructor(private treeService: TreeService, private router: Router, private messageService: MessageService,
@@ -229,8 +230,20 @@ export class UpdateComponent implements OnInit {
 
 
   updateNode() {
-    //console.log(this.selectedNode);
-    //console.log(this.updateServiceLine);
+
+    this.updateServiceLine.data.details['Time of Function/Call'] = 
+    Number(this.updateServiceLine.data.details['DB Calls (ms)']) +Number(this.updateServiceLine.data.details['Logic (ms)'])
+    + Number(this.updateServiceLine.data.details['Rules (ms)']) +  Number(this.updateServiceLine.data.details['Latency (ms)']);
+
+
+    this.updateServiceLine.data.details['Total Process Time'] = 
+    Number(this.updateServiceLine.data.details['Count of Invocations'])* Number(this.updateServiceLine.data.details['Time of Function/Call'] );
+
+    this.updateServiceLine.data.details['Total Process NFR'] = 
+    Number(this.updateServiceLine.data.details['Count of Invocations'])* Number(this.updateServiceLine.data.details['Process NFR'] )
+
+
+
     this.updateServiceLine.data.category = this.selectedCategory.code;
     this.updateServiceLine.data.etaStatus = this.selectedStatus.code;
     this.updateServiceLine.data.connectionType = this.selectedCon.code;
@@ -432,6 +445,13 @@ export class UpdateComponent implements OnInit {
     });
   }
 
+  expandAll(){
+    this.dataList.forEach( node => {
+        this.expandRecursive(node, true);
+    } );
+}
+
+
   private expandRecursive(node: TreeNode, isExpand: boolean) {
     node.expanded = isExpand;
     if (node.children) {
@@ -467,11 +487,21 @@ export class UpdateComponent implements OnInit {
   }
 
   rename() {
-    this.treeService.rename(this.updateServiceLine.data['_id'], this.renameId).subscribe(data => {
+    let oldId = this.updateServiceLine['_id'];
+    this.treeService.rename(this.updateServiceLine['_id'], this.renameId).subscribe(data => {
       this.showUpdateGraph(this.renameId);
-      this.lineId = this.renameId;
+      for(let item of this.items){
+        if(item.label === oldId){
+          item.label = this.renameId;
+          break;
+        }
+      }
+      this.displayRename = false;
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node renamed successfully' });
     })
+  }
+  onUploadNodeData(event : any){
+
   }
 
 }

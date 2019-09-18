@@ -183,7 +183,7 @@ height: 100% !important;
 }
 .ui-accordion-content {
 overflow-y: auto !important;
-height: 480px !important;
+/* height: 480px !important; */
 }
 
 .ui-organizationchart {

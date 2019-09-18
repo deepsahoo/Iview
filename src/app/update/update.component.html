@@ -1,15 +1,32 @@
 <div>
   <p-menubar [model]="items">
+      <div>
+          <button type="button" pButton icon="pi pi-plus" (click)="expandAll()" label="Expand All"
+          class="ui-button-rounded ui-button-success" style="margin-right: 5px"></button>
+        
+        <button type="button" pButton icon="pi pi-times" (click)="collapseAll()" label="Collapse All"
+          class="ui-button-rounded ui-button-secondary"></button>
+      </div>
   </p-menubar>
   <p-toast [style]="{marginTop: '80px'}"></p-toast>
 </div>
 <div class="ui-g overlay tree-wrapper" *ngIf="isView">
-  <p-tree [value]="dataList" layout="horizontal" selectionMode="single" [(selection)]="selectedNode"
-    (onNodeSelect)="onNodeSelect($event)">
-    <ng-template let-node pTemplate="default">
-      <div>{{node.name}}</div>
-    </ng-template>
-  </p-tree>
+  <div class="ui-g">
+    <p-tree [value]="dataList" layout="horizontal" selectionMode="single" [(selection)]="selectedNode"
+      (onNodeSelect)="onNodeSelect($event)">
+      <ng-template let-node pTemplate="default">
+        <div>{{node.name}}</div>
+      </ng-template>
+    </p-tree>
+  </div>
+  <!-- <div class="ui-g">
+
+    <button type="button" pButton icon="pi pi-plus" (click)="expandAll()" label="Expand All"
+      class="ui-button-rounded ui-button-success"></button>
+    
+    <button type="button" pButton icon="pi pi-times" (click)="collapseAll()" label="Collapse All"
+      class="ui-button-rounded ui-button-secondary"></button>
+  </div> -->
 
 </div>
 
@@ -39,17 +56,17 @@
 
 
 
-<p-dialog header= "{{'Details : ' + lineId}}" [(visible)]="display" [modal]="true" [responsive]="true"
+<p-dialog header="{{'Details : ' + lineId}}" [(visible)]="display" [modal]="true" [responsive]="true"
   [style]="{'minWidth': '200px','width':'500px'}" [minY]="70" [maximizable]="true"
-   [contentStyle]="{'overflow':'visible'}" styleClass="active" > 
-   <!-- -->
+  [contentStyle]="{'overflow':'visible'}" styleClass="active">
+  <!-- -->
 
   <div class="ui-g" *ngIf="selectedNode">
 
     <div style="width: 80%">
       <div class="ui-g-4" style="text-align: right">Name : </div>
       <div class="ui-g-8">
-        <input type="text" pInputText [(ngModel)]="selectedNode.name" style="width:100%"/>
+        <input type="text" pInputText [(ngModel)]="selectedNode.name" style="width:100%" />
       </div>
 
       <div class="ui-g-4" style="text-align: right">Description : </div>
@@ -134,7 +151,7 @@
             </div>
           </div>
 
-          <div class="ui-g">
+          <!-- <div class="ui-g">
             <div class="ui-g-2" style="text-align: right">Count of Invocations : </div>
             <div class="ui-g-4">
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Count of Invocations']"
@@ -145,8 +162,8 @@
             <div class="ui-g-4">
               <input type="text" pInputText [(ngModel)]="selectedNode.details['DB Calls (ms)']" style="width:100%" />
             </div>
-          </div>
-
+          </div> -->
+          <!-- 
           <div class="ui-g">
             <div class="ui-g-2" style="text-align: right">Logic (ms) : </div>
             <div class="ui-g-4">
@@ -157,10 +174,10 @@
             <div class="ui-g-4">
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Rules (ms)']" style="width:100%" />
             </div>
-          </div>
+          </div> -->
 
 
-          <div class="ui-g">
+          <!-- <div class="ui-g">
             <div class="ui-g-2" style="text-align: right">Latency (ms) : </div>
             <div class="ui-g-4">
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Latency (ms)']" style="width:100%" />
@@ -171,10 +188,10 @@
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Time of Function/Call']"
                 style="width:100%" />
             </div>
-          </div>
+          </div> -->
 
 
-          <div class="ui-g">
+          <!-- <div class="ui-g">
             <div class="ui-g-2" style="text-align: right">Total Process Time : </div>
             <div class="ui-g-4">
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Time']"
@@ -186,6 +203,167 @@
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Path Length']"
                 style="width:100%" />
             </div>
+          </div> -->
+
+
+          <!-- <div class="ui-g">
+            <div class="ui-g-2" style="text-align: right">Process NFR</div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Process NFR']" style="width:100%" />
+            </div>
+
+            <div class="ui-g-2" style="text-align: right">Total Process NFR : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process NFR']"
+                style="width:100%" />
+            </div>
+          </div> -->
+
+
+
+          <!-- <div class="ui-g">
+            <div class="ui-g-2" style="text-align: right">Total Process Path Length NFR : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Path Length NFR']"
+                style="width:100%" />
+            </div>
+          </div> -->
+        </p-accordionTab>
+
+      </p-accordion>
+    </div>
+
+
+    <!-- Satistics -->
+    <div class="ui-g-12">
+      <p-accordion>
+        <p-accordionTab header="Satistics">
+
+          <!-- <div class="ui-g">
+              <div class="ui-g-2" style="text-align: right">Process : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Process']" style="width:100%" />
+              </div>
+  
+              <div class="ui-g-2" style="text-align: right">Group : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Group']" style="width:100%" />
+              </div>
+            </div> -->
+
+
+          <!-- <div class="ui-g">
+              <div class="ui-g-2" style="text-align: right">Owner : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Owner']" style="width:100%" />
+              </div>
+  
+              <div class="ui-g-2" style="text-align: right">Hosted Name : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Hosted Name']" style="width:100%" />
+              </div>
+            </div> -->
+
+
+          <!-- <div class="ui-g">
+              <div class="ui-g-2" style="text-align: right">Provider : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Provider']" style="width:100%" />
+              </div>
+  
+              <div class="ui-g-2" style="text-align: right">Consumer : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Consumer']" style="width:100%" />
+              </div>
+            </div> -->
+
+          <!-- <div class="ui-g">
+              <div class="ui-g-2" style="text-align: right">Integration Pattern : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Integration Pattern']"
+                  style="width:100%" />
+              </div>
+  
+              <div class="ui-g-2" style="text-align: right">Confidence Factor : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Confidence Factor']"
+                  style="width:100%" />
+              </div>
+            </div> -->
+
+          <div class="ui-g">
+            <div class="ui-g-2" style="text-align: right">Count of Invocations : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Count of Invocations']"
+                style="width:100%" />
+            </div>
+
+            <!-- <div class="ui-g-2" style="text-align: right">DB Calls (ms) : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['DB Calls (ms)']" style="width:100%" />
+              </div> -->
+          </div>
+
+          <div class="ui-g">
+
+            <div class="ui-g-2" style="text-align: right">DB Calls (ms) : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['DB Calls (ms)']" style="width:100%" />
+            </div>
+
+            <div class="ui-g-2" style="text-align: right">Logic (ms) : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Logic (ms)']" style="width:100%" />
+            </div>
+
+            <!-- <div class="ui-g-2" style="text-align: right">Rules (ms) : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Rules (ms)']" style="width:100%" />
+              </div> -->
+          </div>
+
+
+          <div class="ui-g">
+
+            <div class="ui-g-2" style="text-align: right">Rules (ms) : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Rules (ms)']" style="width:100%" />
+            </div>
+
+
+            <div class="ui-g-2" style="text-align: right">Latency (ms) : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Latency (ms)']" style="width:100%" />
+            </div>
+
+            <!-- <div class="ui-g-2" style="text-align: right">Time of Function/Call : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Time of Function/Call']"
+                  style="width:100%"   [disabled]="disabled" />
+              </div> -->
+          </div>
+
+
+          <div class="ui-g">
+
+            <div class="ui-g-2" style="text-align: right">Time of Function/Call : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Time of Function/Call']"
+                style="width:100%" [disabled]="disabled" />
+            </div>
+
+
+            <div class="ui-g-2" style="text-align: right">Total Process Time : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Time']" style="width:100%"
+                [disabled]="disabled" />
+            </div>
+
+            <!-- <div class="ui-g-2" style="text-align: right">Total Process Path Length : </div>
+              <div class="ui-g-4">
+                <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Path Length']"
+                  style="width:100%"  [disabled]="disabled" />
+              </div> -->
           </div>
 
 
@@ -197,18 +375,23 @@
 
             <div class="ui-g-2" style="text-align: right">Total Process NFR : </div>
             <div class="ui-g-4">
-              <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process NFR']"
-                style="width:100%" />
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process NFR']" style="width:100%"
+                [disabled]="disabled" />
             </div>
           </div>
 
 
 
           <div class="ui-g">
+            <div class="ui-g-2" style="text-align: right">Total Process Path Length : </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Path Length']"
+                style="width:100%" [disabled]="disabled" />
+            </div>
             <div class="ui-g-2" style="text-align: right">Total Process Path Length NFR : </div>
             <div class="ui-g-4">
               <input type="text" pInputText [(ngModel)]="selectedNode.details['Total Process Path Length NFR']"
-                style="width:100%" />
+                style="width:100%" [disabled]="disabled" />
             </div>
           </div>
         </p-accordionTab>
@@ -218,28 +401,35 @@
 
 
 
+
   </div>
+
+
+
+
+
+
 
   <div class="ui-g">
 
   </div>
   <p-footer>
     <div>
-    <button type="button" pButton icon="pi pi-plus" (click)="addChild()" 
-      label="New" class = "ui-button-rounded ui-button-success"></button>
-    <div style="display: inline-block;" pTooltip="Can not be deleted as it has child node" [tooltipDisabled]="selectedNode && (!selectedNode.children || (selectedNode.children && 
+      <button type="button" pButton icon="pi pi-plus" (click)="addChild()" label="New"
+        class="ui-button-rounded ui-button-success"></button>
+      <div style="display: inline-block;" pTooltip="Can not be deleted as it has child node" [tooltipDisabled]="selectedNode && (!selectedNode.children || (selectedNode.children && 
     selectedNode.children.length==0))">
-      <button type="button" pButton icon="pi pi-trash" (click)="removeNode()" label="Remove"
-        [disabled]="selectedNode && selectedNode.children && selectedNode.children.length>0"
-        class = "ui-button-rounded ui-button-danger" ></button>
+        <button type="button" pButton icon="pi pi-trash" (click)="removeNode()" label="Remove"
+          [disabled]="selectedNode && selectedNode.children && selectedNode.children.length>0"
+          class="ui-button-rounded ui-button-danger"></button>
+      </div>
+      <button type="button" pButton icon="pi pi-check" (click)="updateNode()" label="Ok"
+        class="ui-button-rounded"></button>
+      <button type="button" pButton icon="pi pi-times" (click)="display = false" label="Cancel"
+        class="ui-button-rounded ui-button-secondary"></button>
     </div>
-    <button type="button" pButton icon="pi pi-check" 
-    (click)="updateNode()" label="Ok"  class = "ui-button-rounded"></button>
-    <button type="button" pButton icon="pi pi-times" 
-    (click)="display = false" label="Cancel"  class = "ui-button-rounded ui-button-secondary"></button>
-  </div>
   </p-footer>
-  
+
 
 </p-dialog>
 
@@ -252,36 +442,36 @@
 
   <div class="ui-g" *ngIf="childNode && childNode.details">
     <div style="width: 80%">
-    <div class="ui-g-4" style="text-align: right">Name : </div>
-    <div class="ui-g-8">
-      <input type="text" pInputText [(ngModel)]="childNode.name" style="width:100%" />
-    </div>
+      <div class="ui-g-4" style="text-align: right">Name : </div>
+      <div class="ui-g-8">
+        <input type="text" pInputText [(ngModel)]="childNode.name" style="width:100%" />
+      </div>
 
-    <div class="ui-g-4" style="text-align: right">Description : </div>
-    <div class="ui-g-8">
-      <input type="text" pInputText [(ngModel)]="childNode.description" style="width:100%" />
-    </div>
+      <div class="ui-g-4" style="text-align: right">Description : </div>
+      <div class="ui-g-8">
+        <input type="text" pInputText [(ngModel)]="childNode.description" style="width:100%" />
+      </div>
 
-    <div class="ui-g-4" style="text-align: right">Category : </div>
-    <div class="ui-g-8">
-      <p-dropdown [options]="categoryList" [(ngModel)]="selectedChildCategory" optionLabel="name"
-        placeholder="Select a category"></p-dropdown>
-    </div>
+      <div class="ui-g-4" style="text-align: right">Category : </div>
+      <div class="ui-g-8">
+        <p-dropdown [options]="categoryList" [(ngModel)]="selectedChildCategory" optionLabel="name"
+          placeholder="Select a category"></p-dropdown>
+      </div>
 
 
-    <div class="ui-g-4" style="text-align: right">Eta Status : </div>
-    <div class="ui-g-8">
-      <p-dropdown [options]="statusList" [(ngModel)]="selectedChildStatus" optionLabel="name"
-        placeholder="Select a status">
-      </p-dropdown>
-    </div>
+      <div class="ui-g-4" style="text-align: right">Eta Status : </div>
+      <div class="ui-g-8">
+        <p-dropdown [options]="statusList" [(ngModel)]="selectedChildStatus" optionLabel="name"
+          placeholder="Select a status">
+        </p-dropdown>
+      </div>
 
-    <div class="ui-g-4" style="text-align: right">Connection Type : </div>
-    <div class="ui-g-8">
-      <p-dropdown [options]="conList" [(ngModel)]="selectedChildCon" optionLabel="name" placeholder="Select a type">
-      </p-dropdown>
+      <div class="ui-g-4" style="text-align: right">Connection Type : </div>
+      <div class="ui-g-8">
+        <p-dropdown [options]="conList" [(ngModel)]="selectedChildCon" optionLabel="name" placeholder="Select a type">
+        </p-dropdown>
+      </div>
     </div>
-  </div>
 
     <div class="ui-g-12">
       <p-accordion>
@@ -422,16 +612,18 @@
 
   </div>
   <p-footer>
-    <button type="button" pButton icon="pi pi-plus" class = "ui-button-rounded ui-button-success" (click)="updateChild()" label="Add"></button>
-    <button type="button" pButton icon="pi pi-times" class = "ui-button-rounded ui-button-secondary" (click)="displayChild=false" label="Cancel"></button>
+    <button type="button" pButton icon="pi pi-plus" class="ui-button-rounded ui-button-success" (click)="updateChild()"
+      label="Add"></button>
+    <button type="button" pButton icon="pi pi-times" class="ui-button-rounded ui-button-secondary"
+      (click)="displayChild=false" label="Cancel"></button>
   </p-footer>
 
 </p-dialog>
 
 
 <p-dialog header="Upload" [(visible)]="displayUpload" [modal]="true" [responsive]="true" [modal]="true"
-  [responsive]="true" [style]="{'width': '350px', 'minWidth': '200px'}" [minY]="70" 
-  [baseZIndex]="10000" styleClass="uploadDialog">
+  [responsive]="true" [style]="{'width': '350px', 'minWidth': '200px'}" [minY]="70" [baseZIndex]="10000"
+  styleClass="uploadDialog">
   <div style="text-align: center">
     <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
       (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">
@@ -444,27 +636,27 @@
 </p-dialog>
 
 <p-dialog header="Save as" [(visible)]="displaySaveAs" [modal]="true" [responsive]="true"
-    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass = "updateAsDialog">
-    <div class="ui-g" style="margin-top: 7%">
-        <input type="text" pInputText [(ngModel)]="saveAsId" style="width:100%" />
-    </div>
-    <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="saveAs()" label="Save Copy" class = "ui-button-rounded
+  [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass="updateAsDialog">
+  <div class="ui-g" style="margin-top: 7%">
+    <input type="text" pInputText [(ngModel)]="saveAsId" style="width:100%" />
+  </div>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="saveAs()" label="Save Copy" class="ui-button-rounded
             ui-button-success"></button>
-        <button type="button" pButton icon="pi pi-times" (click)="displaySaveAs = false" label="Cancel"
-            class="ui-button-rounded ui-button-secondary"></button>
-    </p-footer>
+    <button type="button" pButton icon="pi pi-times" (click)="displaySaveAs = false" label="Cancel"
+      class="ui-button-rounded ui-button-secondary"></button>
+  </p-footer>
 </p-dialog>
 
 <p-dialog header="Rename" [(visible)]="displayRename" [modal]="true" [responsive]="true"
-    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass = "updateAsDialog">
-    <div class="ui-g" style="margin-top: 7%">
-        <input type="text" pInputText [(ngModel)]="renameId" style="width:100%" />
-    </div>
-    <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="rename()" label="Ok" class = "ui-button-rounded
+  [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass="updateAsDialog">
+  <div class="ui-g" style="margin-top: 7%">
+    <input type="text" pInputText [(ngModel)]="renameId" style="width:100%" />
+  </div>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="rename()" label="Ok" class="ui-button-rounded
             ui-button-success"></button>
-        <button type="button" pButton icon="pi pi-times" (click)="displayRename = false" label="Cancel"
-            class="ui-button-rounded ui-button-secondary"></button>
-    </p-footer>
+    <button type="button" pButton icon="pi pi-times" (click)="displayRename = false" label="Cancel"
+      class="ui-button-rounded ui-button-secondary"></button>
+  </p-footer>
 </p-dialog>

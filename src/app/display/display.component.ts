@@ -24,6 +24,7 @@ export class DisplayComponent implements OnInit {
   display: boolean = false;
   items: MenuItem[];
   detailList: Detaildata[] = [];
+  statisticsList: Detaildata[] = [];
   conItem: any[] = [];
   etaItem: any[] = [];;
   catItem: any[] = [];
@@ -57,8 +58,8 @@ export class DisplayComponent implements OnInit {
   selectedServiceLine: any = {};
   saveAsId: string;
   updateSlMap: any = {};
-  displayRename : boolean = false;
-  renameId : string;
+  displayRename: boolean = false;
+  renameId: string;
 
   constructor(private treeService: TreeService, @Inject(DOCUMENT) private document: any,
     private messageService: MessageService, private router: Router) {
@@ -267,6 +268,7 @@ export class DisplayComponent implements OnInit {
     var overCircle = function (d) {
       this.selectedNode = d;
       this.detailList = [];
+      this.statisticsList = [];
       this.nodeDetail = this.selectedNode.details;
       this.createNodeDetail(this.nodeDetail);
       updateTempConnector();
@@ -386,6 +388,7 @@ export class DisplayComponent implements OnInit {
       function displayDetails(data) {
         this1.selectedNode = data;
         this1.detailList = [];
+        this.statisticsList = [];
         this1.nodeDetail = this1.selectedNode.details;
         this1.createNodeDetail(this1.nodeDetail);
 
@@ -600,7 +603,16 @@ export class DisplayComponent implements OnInit {
       let det1 = new Detaildata();
       det1.name = key;
       det1.value = nodeDetail[key];
-      this.detailList.push(det1);
+
+      if (key === 'Process'
+        || key === 'Group' || key === 'Owner' || key === 'Hosted Name' || key === 'Provider'
+        || key === 'Consumer'
+        || key === 'Integration Pattern' || key === 'Confidence Factor'
+      ) {
+        this.detailList.push(det1);
+      }else{
+        this.statisticsList.push(det1);
+      }
 
     }
   }
@@ -618,7 +630,7 @@ export class DisplayComponent implements OnInit {
     this.treeService.getAllServiceLines().subscribe(
       data => {
         this.serviceLines = data;
-       // console.log(data);
+        // console.log(data);
       }
     )
 
@@ -681,8 +693,8 @@ export class DisplayComponent implements OnInit {
     this.isView = true;
     let isDelete = false;
 
-    if(this.items.length > 1){
-      this.items.splice(-1,1)
+    if (this.items.length > 1) {
+      this.items.splice(-1, 1)
     }
     let newItem = {
       label: lineId,
@@ -710,7 +722,7 @@ export class DisplayComponent implements OnInit {
             // this.router.navigate(['update', lineId]);
           }
         },
-        
+
 
         {
           label: 'Exit',
@@ -779,7 +791,7 @@ export class DisplayComponent implements OnInit {
     this.selectedServiceLine['_id'] = this.saveAsId;
     this.updateSlMap["data"] = this.selectedServiceLine.data;
     this.updateSlMap["meta"] = this.selectedServiceLine.meta;
-    this.treeService.saveAs(this.updateSlMap,this.saveAsId).subscribe(data => {
+    this.treeService.saveAs(this.updateSlMap, this.saveAsId).subscribe(data => {
       this.initialize('data1');
       this.displaySaveAs = false;
       this.showGraph(this.saveAsId);
@@ -787,8 +799,8 @@ export class DisplayComponent implements OnInit {
     })
   }
 
-  rename(){
-      this.treeService.rename(this.selectedServiceLine['_id'],this.renameId).subscribe(data => {
+  rename() {
+    this.treeService.rename(this.selectedServiceLine['_id'], this.renameId).subscribe(data => {
       this.initialize('data1');
       this.displayRename = false;
       this.showGraph(this.renameId);
