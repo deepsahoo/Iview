@@ -88,4 +88,9 @@ export class TreeService {
     console.error(errorMessage);
     return throwError(errorMessage);
   }
+
+  createTemplate(){
+    let url = this.url + "newDocument"
+    return this.http.get(url).pipe(map((res: Response) => res));
+  }
 }

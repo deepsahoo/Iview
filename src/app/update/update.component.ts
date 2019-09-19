@@ -504,4 +504,11 @@ export class UpdateComponent implements OnInit {
 
   }
 
+  createTeample(){
+    this.treeService.createTemplate().subscribe(data => {
+      this.displayUpload = false;
+      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Successfully created a new Template document' });
+    })
+  }
+
 }

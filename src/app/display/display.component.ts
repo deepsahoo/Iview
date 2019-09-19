@@ -807,4 +807,11 @@ export class DisplayComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node renamed successfully' });
     })
   }
+  createTeample(){
+    this.treeService.createTemplate().subscribe(data => {
+      this.display = false;
+      this.initialize('data1');
+      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Successfully created a new Template document' });
+    })
+  }
 }

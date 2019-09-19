@@ -7,15 +7,15 @@
     [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000"
     styleClass="displayUploadDialog">
 
-    <p>
+    <div class=ui-g>
         <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
             (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">
 
         </p-fileUpload>
 
-
-    </p>
-
+        <button type="button" pButton icon="pi pi-plus" (click)="createTeample()" label="Create from Template"
+            class="ui-button-success" style="margin-left: 10px;height: 31px;"></button>
+    </div>
 </p-dialog>
 <div class="ui-g content overlay" style="min-height: 100%">
     <div id="graphcontainer" #graphcontainer style="height: 100%;width: 100%;" *ngIf="isView"></div>
@@ -75,25 +75,25 @@
 
             <!-- statistics -->
             <p-accordion>
-                    <p-accordionTab header="Statistics" [selected]="true">
-                        <p-table [value]="statisticsList">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Value</th>
-    
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-detail>
-                                <tr>
-                                    <td>{{detail.name}}</td>
-                                    <td>{{detail.value}}</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    </p-accordionTab>
-    
-                </p-accordion>
+                <p-accordionTab header="Statistics" [selected]="true">
+                    <p-table [value]="statisticsList">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-detail>
+                            <tr>
+                                <td>{{detail.name}}</td>
+                                <td>{{detail.value}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-accordionTab>
+
+            </p-accordion>
 
 
         </p-tabPanel>
@@ -127,12 +127,12 @@
 </p-sidebar>
 
 <p-dialog header="Save as" [(visible)]="displaySaveAs" [modal]="true" [responsive]="true"
-    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass = "saveAsDialog">
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass="saveAsDialog">
     <div class="ui-g" style="margin-top: 7%">
         <input type="text" pInputText [(ngModel)]="saveAsId" style="width:100%" />
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="saveAs()" label="Save Copy" class = "ui-button-rounded
+        <button type="button" pButton icon="pi pi-check" (click)="saveAs()" label="Save Copy" class="ui-button-rounded
             ui-button-success"></button>
         <button type="button" pButton icon="pi pi-times" (click)="displaySaveAs = false" label="Cancel"
             class="ui-button-rounded ui-button-secondary"></button>
@@ -140,12 +140,12 @@
 </p-dialog>
 
 <p-dialog header="Rename" [(visible)]="displayRename" [modal]="true" [responsive]="true"
-    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass = "saveAsDialog">
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" styleClass="saveAsDialog">
     <div class="ui-g" style="margin-top: 7%">
         <input type="text" pInputText [(ngModel)]="renameId" style="width:100%" />
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="rename()" label="Ok" class = "ui-button-rounded
+        <button type="button" pButton icon="pi pi-check" (click)="rename()" label="Ok" class="ui-button-rounded
             ui-button-success"></button>
         <button type="button" pButton icon="pi pi-times" (click)="displayRename = false" label="Cancel"
             class="ui-button-rounded ui-button-secondary"></button>
