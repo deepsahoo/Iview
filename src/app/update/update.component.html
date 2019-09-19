@@ -234,10 +234,10 @@
     </div>
 
 
-    <!-- Satistics -->
+    <!-- Statistics -->
     <div class="ui-g-12">
       <p-accordion>
-        <p-accordionTab header="Satistics">
+        <p-accordionTab header="Statistics">
 
           <!-- <div class="ui-g">
               <div class="ui-g-2" style="text-align: right">Process : </div>
@@ -624,7 +624,7 @@
 <p-dialog header="Upload" [(visible)]="displayUpload" [modal]="true" [responsive]="true" [modal]="true"
   [responsive]="true" [style]="{'width': '350px', 'minWidth': '200px'}" [minY]="70" [baseZIndex]="10000"
   styleClass="uploadDialog">
-  <div style="text-align: center">
+  <div class  = "ui-g" style="text-align: center">
     <p-fileUpload #form name="myFile[]" maxFileSize="1000000000" customUpload="true" auto="auto"
       (uploadHandler)="uploadNodeData($event,form)" (onUpload)="onUploadNodeData($event)" mode="basic">
 

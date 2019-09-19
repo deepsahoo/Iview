@@ -68,7 +68,7 @@ export class DisplayComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+this.statisticsList = [];
     this.initialize('data');
     /*this.items = [
       {
@@ -599,6 +599,7 @@ export class DisplayComponent implements OnInit {
   }
 
   createNodeDetail(nodeDetail) {
+    this.statisticsList = [];
     for (let key of Object.keys(nodeDetail)) {
       let det1 = new Detaildata();
       det1.name = key;
@@ -772,6 +773,7 @@ export class DisplayComponent implements OnInit {
       return item;
     });
     this.selectedServiceLine = JSON.parse(JSON.stringify(data));
+    this.renameId = this.selectedServiceLine['_id'];
     this.selectedNode = data.data;
     this.nodeDetail = this.selectedNode.details;
     this.createNodeDetail(this.nodeDetail);

@@ -55,6 +55,7 @@ export class UpdateComponent implements OnInit {
     this.route.params.subscribe(
       param => {
         this.lineId = param['id'];
+        this.renameId = param['id'];
         this.showUpdateGraph(this.lineId);
       })
 
@@ -285,6 +286,7 @@ export class UpdateComponent implements OnInit {
     this.treeService.getNodes(lineId).subscribe(
       data => {
         // console.log(data);
+        this.lineId = lineId;
         this.updateServiceLine = data;
         this.parentNode = this.updateServiceLine.data;
         this.currentNode = this.updateServiceLine.data;

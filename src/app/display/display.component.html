@@ -50,8 +50,8 @@
 
 
 <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000">
-    <p-tabView *ngIf="selectedNode">
-        <p-tabPanel header="Details" leftIcon="pi pi-calendar">
+    <p-tabView *ngIf="selectedNode" styleClass = "tabDetails">
+        <p-tabPanel header="Details" leftIcon="pi pi-calendar" >
             <p-accordion>
                 <p-accordionTab header="{{selectedNode.description}}" [selected]="true">
                     <p-table [value]="detailList">

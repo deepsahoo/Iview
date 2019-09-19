@@ -23,6 +23,9 @@
   .saveAsDialog.ui-dialog .ui-dialog-content {
     height: 40% !important;
   } 
-
+  .tabDetails{
+    overflow-y: auto !important;
+    height: 580px !important;
+  }
   
   
