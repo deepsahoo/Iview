@@ -47,7 +47,7 @@ export class UpdateComponent implements OnInit {
   saveAsId: string;
   renameId: string;
   displayRename: boolean = false;
-  disabled : boolean = true;
+  disabled: boolean = true;
 
 
   constructor(private treeService: TreeService, private router: Router, private messageService: MessageService,
@@ -56,7 +56,7 @@ export class UpdateComponent implements OnInit {
       param => {
         this.lineId = param['id'];
         this.renameId = param['id'];
-        this.showUpdateGraph(this.lineId);
+        this.getServiceDetail(this.lineId);
       })
 
   }
@@ -106,10 +106,11 @@ export class UpdateComponent implements OnInit {
           },
 
           {
-            label: 'Exit',
+            label: 'Publish/Exit',
             icon: 'pi pi-sign-out',
             command: (event) => {
               this.displayUpload = false;
+              this.unLockService(false);
               this.router.navigate(['/display']);
             }
           }
@@ -122,48 +123,6 @@ export class UpdateComponent implements OnInit {
 
 
 
-    /*this.items = [
-      {
-        label: 'Home',
-        items: [{
-          label: 'View',
-          icon: 'pi pi-fw pi-home',
-          command: (event) => {
-            this.router.navigate(['/display']);
-          }
-        }
-
-        ]
-      },
-      {
-        label: 'Upload',
-        icon: 'pi pi-fw pi-upload',
-        items: [
-          {
-            label: 'New', icon: 'pi pi-fw pi-upload', command: (event) => {
-               this.displayUpload = true;
-            }
-          }
-
-        ]
-      },
-      {
-        label: 'Update',
-        icon: 'pi pi-fw pi-pencil',
-        items: [
-          {
-            label: 'New', icon: 'pi pi-fw pi-pencil', command: (event) => {
-              if (this.isView) {
-                this.isView = false;
-              }
-              this.router.navigate(['/update']);
-            }
-          }
-
-        ]
-      },
-
-    ];*/
 
     this.categoryList = [
       { name: 'Business Process', code: 'CC000' },
@@ -232,16 +191,16 @@ export class UpdateComponent implements OnInit {
 
   updateNode() {
 
-    this.updateServiceLine.data.details['Time of Function/Call'] = 
-    Number(this.updateServiceLine.data.details['DB Calls (ms)']) +Number(this.updateServiceLine.data.details['Logic (ms)'])
-    + Number(this.updateServiceLine.data.details['Rules (ms)']) +  Number(this.updateServiceLine.data.details['Latency (ms)']);
+    this.updateServiceLine.data.details['Time of Function/Call'] =
+      Number(this.updateServiceLine.data.details['DB Calls (ms)']) + Number(this.updateServiceLine.data.details['Logic (ms)'])
+      + Number(this.updateServiceLine.data.details['Rules (ms)']) + Number(this.updateServiceLine.data.details['Latency (ms)']);
 
 
-    this.updateServiceLine.data.details['Total Process Time'] = 
-    Number(this.updateServiceLine.data.details['Count of Invocations'])* Number(this.updateServiceLine.data.details['Time of Function/Call'] );
+    this.updateServiceLine.data.details['Total Process Time'] =
+      Number(this.updateServiceLine.data.details['Count of Invocations']) * Number(this.updateServiceLine.data.details['Time of Function/Call']);
 
-    this.updateServiceLine.data.details['Total Process NFR'] = 
-    Number(this.updateServiceLine.data.details['Count of Invocations'])* Number(this.updateServiceLine.data.details['Process NFR'] )
+    this.updateServiceLine.data.details['Total Process NFR'] =
+      Number(this.updateServiceLine.data.details['Count of Invocations']) * Number(this.updateServiceLine.data.details['Process NFR'])
 
 
 
@@ -278,6 +237,64 @@ export class UpdateComponent implements OnInit {
     }
     this.displayChild = false;
     this.updateNode();
+  }
+
+  getServiceDetail(lineId: any) {
+
+
+    this.isView = true;
+    this.dataList = [];
+    this.treeService.getNodes(lineId).subscribe(
+      data => {
+        // console.log(data);
+        this.lineId = lineId;
+        this.updateServiceLine = data;
+        this.parentNode = this.updateServiceLine.data;
+        this.currentNode = this.updateServiceLine.data;
+        this.dataList.push(this.updateServiceLine.data);
+        this.collapseAll();
+
+
+        /**
+         * lock feaute
+         */
+
+        this.lockService(true);
+
+      })
+
+  }
+
+  lockService(isLocked : boolean) {
+    this.updateSlMap["data"] = this.updateServiceLine.data;
+    this.updateSlMap["meta"] = this.updateServiceLine.meta;
+    this.updateSlMap["isLocked"] = isLocked;
+    this.treeService.lockService(this.updateSlMap, this.lineId).subscribe(
+      data => {
+        this.updateSlMap = {};
+        console.log('locked');
+      }
+    )
+  }
+
+  unLockService(isLocked : boolean) {
+    this.updateSlMap["data"] = this.updateServiceLine.data;
+    this.updateSlMap["meta"] = this.updateServiceLine.meta;
+    this.updateSlMap["isLocked"] = isLocked;
+    this.treeService.lockService(this.updateSlMap, this.lineId).subscribe(
+      data => {
+        let details = {};
+        details['isLocked'] = false;
+        this.updateServiceLine.details = details;
+        this.updateSlMap["details"] = this.updateServiceLine.details;
+        this.treeService.publish(this.updateSlMap, this.lineId).subscribe(
+          data => {
+            this.updateSlMap = {};
+            console.log('sucess');
+          }
+        )
+      }
+    )
   }
 
   showUpdateGraph(lineId: any) {
@@ -447,11 +464,11 @@ export class UpdateComponent implements OnInit {
     });
   }
 
-  expandAll(){
-    this.dataList.forEach( node => {
-        this.expandRecursive(node, true);
-    } );
-}
+  expandAll() {
+    this.dataList.forEach(node => {
+      this.expandRecursive(node, true);
+    });
+  }
 
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
@@ -478,8 +495,8 @@ export class UpdateComponent implements OnInit {
       this.displaySaveAs = false;
       this.showUpdateGraph(this.saveAsId);
       this.lineId = this.saveAsId;
-      for(let item of this.items){
-        if(item.label === oldId){
+      for (let item of this.items) {
+        if (item.label === oldId) {
           item.label = this.saveAsId;
           break;
         }
@@ -492,8 +509,8 @@ export class UpdateComponent implements OnInit {
     let oldId = this.updateServiceLine['_id'];
     this.treeService.rename(this.updateServiceLine['_id'], this.renameId).subscribe(data => {
       this.showUpdateGraph(this.renameId);
-      for(let item of this.items){
-        if(item.label === oldId){
+      for (let item of this.items) {
+        if (item.label === oldId) {
           item.label = this.renameId;
           break;
         }
@@ -502,11 +519,11 @@ export class UpdateComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Node renamed successfully' });
     })
   }
-  onUploadNodeData(event : any){
+  onUploadNodeData(event: any) {
 
   }
 
-  createTeample(){
+  createTeample() {
     this.treeService.createTemplate().subscribe(data => {
       this.displayUpload = false;
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Successfully created a new Template document' });

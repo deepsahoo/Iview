@@ -66,6 +66,21 @@ export class TreeService {
       catchError(this.handleError));
   }
 
+  lockService(map,id){
+    let url = this.url + 'lock/service/' + id;
+    return this.http.post(url, map).pipe(
+      tap(data => console.log('All: ' + JSON.stringify(data))),
+      catchError(this.handleError));
+  }
+
+  publish(map,id){
+    let url = this.url + 'update/publish/' + id;
+    return this.http.post(url, map).pipe(
+      tap(data => console.log('All: ' + JSON.stringify(data))),
+      catchError(this.handleError));
+  }
+
+
 
 
   private extractData(res: Response) {

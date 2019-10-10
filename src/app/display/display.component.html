@@ -151,3 +151,16 @@
             class="ui-button-rounded ui-button-secondary"></button>
     </p-footer>
 </p-dialog>
+
+<p-dialog header="Service line locked" [(visible)]="showLock" [modal]="true" [responsive]="true" [modal]="true" [responsive]="true"
+    [style]="{width: '350px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000"
+    styleClass="saveAsDialog">
+    <div class="ui-g" style="margin-top: 7%">
+        <p> This service is being updated. Try selecting the service line from home page after some time</p>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="showLock = false" label="Ok" class="ui-button-rounded
+            ui-button-success"></button>
+       
+    </p-footer>
+</p-dialog>

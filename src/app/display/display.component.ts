@@ -60,6 +60,7 @@ export class DisplayComponent implements OnInit {
   updateSlMap: any = {};
   displayRename: boolean = false;
   renameId: string;
+  showLock : boolean = false;
 
   constructor(private treeService: TreeService, @Inject(DOCUMENT) private document: any,
     private messageService: MessageService, private router: Router) {
@@ -70,51 +71,6 @@ export class DisplayComponent implements OnInit {
   ngOnInit(): void {
 this.statisticsList = [];
     this.initialize('data');
-    /*this.items = [
-      {
-        label: '',
-        icon: 'pi pi-bars',
-        items: [{
-          label: 'View',
-          icon: 'pi pi-fw pi-sitemap',
-          command: (event) => {
-            if (this.isView) {
-              this.isView = false;
-            }
-            this.router.navigate(['/display']);
-          }
-        }
-
-        ]
-      },
-      {
-        label: 'Upload',
-        icon: 'pi pi-fw pi-upload',
-        items: [
-          {
-            label: 'New', icon: 'pi pi-fw pi-upload', command: (event) => {
-              this.display = true;
-            }
-          }
-
-        ]
-      },
-      {
-        label: 'Update',
-        icon: 'pi pi-fw pi-pencil',
-        items: [
-          {
-            label: 'New', icon: 'pi pi-fw pi-pencil', command: (event) => {
-              this.router.navigate(['/update']);
-            }
-          }
-
-        ]
-      },
-
-    ];*/
-
-
     this.items = [
       {
         label: '',
@@ -704,14 +660,21 @@ this.statisticsList = [];
           label: 'Edit',
           icon: 'pi pi-fw pi-pencil',
           command: (event) => {
-            this.router.navigate(['update', lineId]);
+           // this.router.navigate(['update', lineId]);
+           this.checkLocked(lineId);
           }
         },
         {
           label: 'Save As',
           icon: 'pi pi-copy',
           command: (event) => {
-            this.displaySaveAs = true;
+
+            if(this.selectedServiceLine.details && this.selectedServiceLine.details.isLocked){
+              this.showLock = true;
+            }else{
+              this.displaySaveAs = true;
+            }
+           
             // this.router.navigate(['update', lineId]);
           }
         },
@@ -719,7 +682,13 @@ this.statisticsList = [];
           label: 'Rename',
           icon: 'pi pi-tags',
           command: (event) => {
-            this.displayRename = true;
+
+            if(this.selectedServiceLine.details && this.selectedServiceLine.details.isLocked){
+              this.showLock = true;
+            }else{
+              this.displayRename = true;
+            }
+          
             // this.router.navigate(['update', lineId]);
           }
         },
@@ -815,5 +784,13 @@ this.statisticsList = [];
       this.initialize('data1');
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Successfully created a new Template document' });
     })
+  }
+
+  checkLocked(lineId){
+    if(this.selectedServiceLine.details && this.selectedServiceLine.details.isLocked){
+      this.showLock = true;
+    }else{
+      this.router.navigate(['update', lineId]);;
+    }
   }
 }
