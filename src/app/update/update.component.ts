@@ -129,7 +129,7 @@ export class UpdateComponent implements OnInit {
       { name: 'PCF', code: 'CC001' },
       { name: 'Mule ESB', code: 'CC002' },
       { name: 'Mule API Gateway', code: 'CC003' },
-      { name: 'Legacy BC', code: 'CC004' },
+      { name: 'Legacy', code: 'CC004' },
       { name: 'Legacy Modernized', code: 'CC005' },
       { name: 'Cross-Product', code: 'CC006' },
       { name: 'Cross-Portfolio', code: 'CC007' },
@@ -155,7 +155,7 @@ export class UpdateComponent implements OnInit {
       { name: 'REST Service - API', code: 'IP007' },
       { name: 'REST Service - SOAP Service', code: 'IP008' },
       { name: 'API - REST Service', code: 'IP009' },
-      { name: 'BC Internal', code: 'IP010' }
+      { name: 'Legacy Internal', code: 'IP010' }
     ];
 
     // all service lines
@@ -265,7 +265,7 @@ export class UpdateComponent implements OnInit {
 
   }
 
-  lockService(isLocked : boolean) {
+  lockService(isLocked: boolean) {
     this.updateSlMap["data"] = this.updateServiceLine.data;
     this.updateSlMap["meta"] = this.updateServiceLine.meta;
     this.updateSlMap["isLocked"] = isLocked;
@@ -277,7 +277,7 @@ export class UpdateComponent implements OnInit {
     )
   }
 
-  unLockService(isLocked : boolean) {
+  unLockService(isLocked: boolean) {
     this.updateSlMap["data"] = this.updateServiceLine.data;
     this.updateSlMap["meta"] = this.updateServiceLine.meta;
     this.updateSlMap["isLocked"] = isLocked;
@@ -486,23 +486,54 @@ export class UpdateComponent implements OnInit {
   }
 
   saveAs() {
-    let oldId = this.updateServiceLine['_id'];
-    this.updateServiceLine['_id'] = this.saveAsId;
+
+    //unlock previous one
+
+
     this.updateSlMap["data"] = this.updateServiceLine.data;
     this.updateSlMap["meta"] = this.updateServiceLine.meta;
-    this.treeService.saveAs(this.updateSlMap, this.saveAsId).subscribe(data => {
-      //this.initialize('data1');
-      this.displaySaveAs = false;
-      this.showUpdateGraph(this.saveAsId);
-      this.lineId = this.saveAsId;
-      for (let item of this.items) {
-        if (item.label === oldId) {
-          item.label = this.saveAsId;
-          break;
-        }
+    this.updateSlMap["isLocked"] = false;
+    this.treeService.lockService(this.updateSlMap, this.lineId).subscribe(
+      data => {
+        let details = {};
+        details['isLocked'] = false;
+        this.updateServiceLine.details = details;
+        this.updateSlMap["details"] = this.updateServiceLine.details;
+        this.treeService.publish(this.updateSlMap, this.lineId).subscribe(
+          data => {
+            this.updateSlMap = {};
+            let oldId = this.updateServiceLine['_id'];
+            this.updateServiceLine['_id'] = this.saveAsId;
+            this.updateSlMap["data"] = this.updateServiceLine.data;
+            this.updateSlMap["meta"] = this.updateServiceLine.meta;
+
+            let details = {};
+            details['isLocked'] = true;
+            this.updateServiceLine.details = details;
+            this.updateSlMap["details"] = this.updateServiceLine.details;
+
+
+            this.treeService.saveAs(this.updateSlMap, this.saveAsId).subscribe(data => {
+              //this.initialize('data1');
+              this.displaySaveAs = false;
+              this.showUpdateGraph(this.saveAsId);
+              this.lineId = this.saveAsId;
+              this.renameId = this.lineId;
+              for (let item of this.items) {
+                if (item.label === oldId) {
+                  item.label = this.saveAsId;
+                  break;
+                }
+              }
+              this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Copy has been saved and set as current node' });
+            })
+          }
+        )
       }
-      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Copy has been saved and set as current node' });
-    })
+    )
+
+
+
   }
 
   rename() {
